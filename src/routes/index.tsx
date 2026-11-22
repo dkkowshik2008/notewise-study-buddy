@@ -1,23 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { StudyBuddy } from "@/components/study-buddy";
 
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "AI Study Buddy — Notes to Quiz" },
+      {
+        name: "description",
+        content: "Turn class notes into a clear summary, key terms, and a five-question practice quiz.",
+      },
+      { property: "og:title", content: "AI Study Buddy — Notes to Quiz" },
+      {
+        property: "og:description",
+        content: "Turn class notes into a clear summary, key terms, and a five-question practice quiz.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: StudyBuddy,
 });
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}

@@ -1,0 +1,3 @@
+- [ ] Build the Study Buddy dashboard and PDF/text input.
+- [ ] Use Lovable’s built-in Gemini through the server-side AI Gateway; avoid a Google key.
+- [ ] Generate and test exact summary, quiz, and key-term outputs.
