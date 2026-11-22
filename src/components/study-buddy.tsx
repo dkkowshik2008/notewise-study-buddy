@@ -108,9 +108,10 @@ export function StudyBuddy() {
 
       const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
       pdfjs.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
-      const document = await pdfjs.getDocument({ data }).promise;
+      const loadingTask = pdfjs.getDocument({ data });
+      const document = await loadingTask.promise;
       if (document.numPages > MAX_PDF_PAGES) {
-        await document.destroy();
+        await loadingTask.destroy();
         setPdfError("This PDF has more than 50 pages. Choose a shorter file or paste selected text.");
         return;
       }
@@ -121,7 +122,7 @@ export function StudyBuddy() {
         const text = await page.getTextContent();
         pageText.push(text.items.map((item) => ("str" in item ? item.str : "")).join(" "));
       }
-      await document.destroy();
+      await loadingTask.destroy();
 
       const extractedText = pageText.join("\n\n").replace(/\s+/g, " ").trim();
       if (extractedText.length < 20) {

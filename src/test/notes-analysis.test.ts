@@ -35,15 +35,24 @@ describe("study set output rules", () => {
   it("requires exactly 5 multiple-choice questions with 4 options, an answer, and an explanation", () => {
     const studySet = makeStudySet();
     const fourQuestions = { ...studySet, quiz: studySet.quiz.slice(0, 4) };
-    const threeOptions = makeStudySet();
-    threeOptions.quiz[0] = {
-      ...threeOptions.quiz[0],
-      options: ["First", "Second", "Third"],
+    const threeOptions = {
+      ...studySet,
+      quiz: studySet.quiz.map((question, index) =>
+        index === 0 ? { ...question, options: ["First", "Second", "Third"] } : question,
+      ),
     };
-    const invalidAnswer = makeStudySet();
-    invalidAnswer.quiz[0] = { ...invalidAnswer.quiz[0], correctOptionIndex: 4 };
-    const missingExplanation = makeStudySet();
-    missingExplanation.quiz[0] = { ...missingExplanation.quiz[0], explanation: "" };
+    const invalidAnswer = {
+      ...studySet,
+      quiz: studySet.quiz.map((question, index) =>
+        index === 0 ? { ...question, correctOptionIndex: 4 } : question,
+      ),
+    };
+    const missingExplanation = {
+      ...studySet,
+      quiz: studySet.quiz.map((question, index) =>
+        index === 0 ? { ...question, explanation: "" } : question,
+      ),
+    };
 
     expect(notesAnalysisSchema.safeParse(studySet).success).toBe(true);
     expect(notesAnalysisSchema.safeParse(fourQuestions).success).toBe(false);
